@@ -1,0 +1,70 @@
+/**
+ * https://docs.gradle.org/current/userguide/publishing_maven.html
+ * https://developer.android.google.cn/studio/build/maven-publish-plugin
+ * https://github.com/jitpack/android-example/blob/master/library/build.gradle
+ */
+apply plugin: 'maven-publish'
+
+/*
+ * 可以在这里指定 group 和 version（但是无法指定 artifact）
+ * 这里指定的版本号针对所有的发布 task，如果 publications 具体发布任务中指定了版本号，执行相应 task 时 版本号以任务中指定的为准
+ */
+group = 'com.example.test'
+version = '1.0.0'
+
+publishing {
+    /**
+     * 默认已有个 publishPluginMavenPublicationToMavenRepository task 来发布，该 task 使用的 artifact 默认为 module name。
+     * 在不额外自定义 publication 的情况下，也可以直接使用 gradle :plugin:publish 来发布，该 task 会执行所有可能的发布 task。
+     * 自定义额外的 publication 则必须单独使用相应的发布 task，使用 gradle :plugin:publish 会导致多个同类发布 task 产物相互覆盖。
+     */
+    publications {
+        foo(MavenPublication) {
+            groupId = 'com.example.test'
+            artifactId = 'test'
+            version = '1.0.0'
+
+            from components.java
+            pom {
+                name.set("Version Plugin")
+                description.set("A version plugin to control all the projects")
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            // 本地仓库
+            url = mavenLocal()  // ${USER_HOME}/.m2/repository
+
+//            // 远程仓库
+//            url = version.toString().endsWith("SNAPSHOT")
+//                    ? "http://artifactory.jd.com/plugins-snapshots-local"
+//                    : "http://artifactory.jd.com/plugins-releases-local"
+
+//            credentials {
+//                // 明文
+//                // username '1step2hell'
+//                // password 'hahaha'
+//
+//                // 环境变量
+//                // username System.getenv('USER_NAME')
+//                // password System.getenv('PASS_WORD')
+//
+//                /**
+//                 * 配置在本地文件中 ~/.gradle/gradle.properties
+//                 * or
+//                 * 通过 gradle 命令 -P 参数传递: gradle clean :plugin:publish -PUSER_NAME='1step2hell' -PPASS_WORD='hahaha'
+//                 */
+//                username "${USER_NAME}"
+//                password "${PASS_WORD}"
+//            }
+        }
+    }
+}

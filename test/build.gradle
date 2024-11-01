@@ -1,0 +1,34 @@
+plugins {
+    id 'kotlin'
+    id 'java-gradle-plugin'
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:2.0.0"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:2.0.0"
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17
+    }
+}
+
+gradlePlugin {
+    plugins {
+        version {
+            // 在 app 模块需要通过 id 引用这个插件
+            id = 'com.example.test'
+            // 实现这个插件的类的路径
+            implementationClass = 'com.example.test.TestPlugin'
+        }
+    }
+}
+
+apply from: "${rootDir}/mvn-publish.gradle"

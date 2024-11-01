@@ -1,0 +1,18 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {  // this is where the plugins are located
+        mavenCentral()
+        google()
+    }
+    dependencies { // these are the plugins that can be used in subprojects or in the build file itself
+        classpath 'com.example.test:test:1.0.0'
+    }
+}
+
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.compose) apply false
+    alias(libs.plugins.android.library) apply false
+}
